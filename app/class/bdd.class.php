@@ -16,24 +16,23 @@ class bdd {
 		}
 	}
 
-	public function insertInto($sql, $data) {
+	public function changeDb($sql, $data) {
 		try {
-			// var_dump($sql);
-			// var_dump($data);
 			$rqt = self::$pdo->prepare($sql);
 			$rqt->execute($data);
+			return (1);
 		} 
 		catch(Exception $e)
 		{
 			var_dump($e);
-			die(0);
+			return (0);
 		}
 	}
 
-	public function selectInDb() {
+	public function selectInDb($sql) {
 		try {
 			self::$pdo->beginTransaction();
-			$rtn = self::$pdo->query("SELECT * FROM ca_membres");
+			$rtn = self::$pdo->query($sql);
 			$result = $rtn->fetchAll();
 			self::$pdo->commit();
 			return ($result);
