@@ -12,25 +12,38 @@ class bdd {
 		catch(Exception $e)
 		{
 			echo 'Echec de la connexion à la base de données';
-			exit();
+			die(0);
 		}
 	}
 
-    public function selectInDb() {
+	public function changeDb($sql, $data) {
+		try {
+			$rqt = self::$pdo->prepare($sql);
+			$rqt->execute($data);
+			return (1);
+		} 
+		catch(Exception $e)
+		{
+			var_dump($e);
+			return (0);
+		}
+	}
+
+	public function selectInDb($sql) {
 		try {
 			self::$pdo->beginTransaction();
-			$rtn = self::$pdo->query("SELECT * FROM ca_membres");
+			$rtn = self::$pdo->query($sql);
 			$result = $rtn->fetchAll();
-        	self::$pdo->commit();
-        	return ($result);
-        } 
-        catch(Exception $e)
-        {
+			self::$pdo->commit();
+			return ($result);
+		} 
+		catch(Exception $e)
+		{
 			self::$pdo->rollback();
 			echo 'Tout ne s\'est pas bien passé, voir les erreurs ci-dessous<br />';
 			echo 'Erreur : '.$e->getMessage().'<br />';
 			echo 'N° : '.$e->getCode();
-			exit();
-        }
-    }
+			die(0);
+		}
+	}
 }
