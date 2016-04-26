@@ -1,0 +1,10 @@
+<script type="text/javascript">
+	var oReq = new XMLHttpRequest();
+	oReq.open("GET", "http://localhost:8080/camagru/test.php?titi=toto", true);
+	oReq.onreadystatechange = function() {
+ 		if (oReq.readyState == 4 && oReq.status == 200) {
+			document.body.innerHTML = oReq.responseText;
+		}
+	}
+	oReq.send();
+</script>
