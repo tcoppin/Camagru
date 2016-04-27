@@ -57,6 +57,9 @@
 		<input class="js_inputSubscribe" type="password" name="valid_pass" placeholder="Confirmation" required />
 		<button type="submit" name="button" value="suscribe">Inscription</button>
 	</form>
+	<p class="ca_no+margin ca_color_fer">
+		Vous avez déjà un compte&nbsp;? <a href="?pg=connect">Connectez-vous</a>
+	</p>
 </div>
 
 <script type="text/javascript">
