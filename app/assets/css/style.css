@@ -22,17 +22,21 @@ section {
 	padding-top: 70px;
 }
 
-.ca_errorBloc {
+.ca_infoBloc {
 	margin: 2% 3%;
 	padding: 15px;
 	box-sizing: border-box;
 	font-weight: 700;
-	background-color: rgb(247,160,105);
+	background-color: #C3646A;
 	border: 1px solid;
 	border-radius: 10px;
 }
 
-.ca_errorBloc .ca_close {
+.ca_infoBloc.ca_border_blue {
+	background-color: #;
+}
+
+.ca_infoBloc .ca_close {
 	font-family: 'Sansita One', cursive;
 	float: right;
 	cursor: pointer;

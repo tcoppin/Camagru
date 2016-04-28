@@ -19,8 +19,10 @@ class bdd {
 	public function changeDb($sql, $data) {
 		try {
 			$rqt = self::$pdo->prepare($sql);
-			$rqt->execute($data);
-			return (1);
+			if ($rqt->execute($data))
+				return (1);
+			else
+				return (0);
 		} 
 		catch(Exception $e)
 		{

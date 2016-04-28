@@ -1,8 +1,8 @@
 <!doctype html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-	<link href='https://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css' />
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 	<script type="text/javascript" src="assets/js/common.js"></script>
 	<title>/*** Camagru ***/</title>
