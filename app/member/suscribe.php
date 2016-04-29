@@ -52,13 +52,11 @@
 					ca_mail($sb_email, $subject, $content);
 					$_SESSION['error'] = "Inscription réussie. Une mail a été envoyer pour valider votre compte.";
 					$_SESSION['info'] = true;
-					header("Location: index.php");
 				} else {
 					$_SESSION['error'] = "Une erreur est survenue. Veuillez recommencer ou contactez l'administrateur.";
 				}
-			} else {
-				require_once('./part/error.php');
 			}
+			header('Location: index.php');
 		}
 	}
 ?>
@@ -67,7 +65,7 @@
 	<p class="ca_no_margin ca_color_fer">
 		Créer et gérer vos photos montages, liker et commenter ceux des autres membres. L'inscription va vous donner accès aux fonctionnalités réservées aux membres et le tout gratuitement.
 	</p>
-	<form action="index.php?pg=subscribe" method="post">
+	<form action="index.php?pg=subscribe_php" method="post">
 		<input class="js_inputSubscribe" type="text" name="login" placeholder="Pseudo" maxlength="40" required />
 		<input class="js_inputSubscribe" type="email" name="email" placeholder="Email" maxlength="255" required />
 		<input class="js_inputSubscribe" type="password" name="pass" placeholder="Mot de passe" required />

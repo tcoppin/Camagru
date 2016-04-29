@@ -7,6 +7,9 @@
 
 	require_once('./part/header.php');
 
+	if (isset($_SESSION['error']) && !empty($_SESSION['error']))
+		require_once('./part/error.php');
+
 	/* Pages */
 	if ($_GET['pg'] == "subscribe")
 		require_once('./member/suscribe.php');
