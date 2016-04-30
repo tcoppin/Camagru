@@ -1,9 +1,12 @@
 <?php
 
-require_once("./config/database.php");
-require_once("./config/define.php");
+	require_once(dirname(__FILE__)."/config/database.php");
+	require_once(dirname(__FILE__)."/config/define.php");
 
-// Class
-require_once("./class/bdd.class.php");
+	// Class
+	require_once(dirname(__FILE__)."/class/bdd.class.php");
 
-require_once("./functions.php");
+	require_once(dirname(__FILE__)."/functions.php");
+
+	$db = new bdd();
+	$db->connect();

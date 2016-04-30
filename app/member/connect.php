@@ -1,47 +1,9 @@
-<?php
-	if (isset($_POST) && isset($_POST['button']) && !empty($_POST['button']) && $_POST['button'] === "connect")
-	{
-		if ((isset($_POST['login']) && !empty($_POST['login']))
-			&& (isset($_POST['pass']) && !empty($_POST['pass']))
-		) {
-			$sb_login = ca_secu($_POST['login']);
-			$sb_pass = ca_secu($_POST['pass']);
-			$sb_validPass = ca_secu($_POST['valid_pass']);
-
-			if (strlen($sb_login) > 40) {
-				$_SESSION['error'] = "Votre login est trop long.";
-			}
-			if ($sb_pass !== $sb_validPass) {
-				$_SESSION['error'] = "Les mots de passe différent.";
-			} else {
-				$sb_pass = ca_crypt($sb_pass, null);
-			}
-
-			if (!isset($_SESSION['error']) && empty($_SESSION['error'])) {
-				date_default_timezone_set('France/Paris');
-				$token = ca_generateToken(5).ca_generateToken(5).ca_generateToken(5).ca_generateToken(5).ca_generateToken(5);
-				$sql = 'INSERT INTO `ca_membres` (`login`, `email`, `pass`, `date_inscrip`, `validate`, `token`) VALUES (:login , :email , :pass , :date_inscrip , :validate, :token)';
-				$array = array(':login' => $sb_login, ':email' => $sb_email, ':pass' => $sb_pass, ':date_inscrip' => date('Y-m-d', time()), ':validate' => 0, ':token' => $token);
-				if ($db->changeDb($sql, $array) == 1) {
-					$subject = "Inscription à Camagru.com -- Validation";
-					$valid_link = ADDR_HOST."/index.php?pg=validation&login=".$sb_login."&token=".$token;
-					$content = "Bonjour ".$sb_login.",<br /><br />Merci de votre inscription sur notre site <a href=\"".ADDR_HOST."\">camagru.com</a>.<br /><br />Pour valider votre inscription merci de cliquer sur le lien suivant :<br /><a href=\"".$valid_link."\">".$valid_link."</a>";
-					ca_mail($sb_email, $subject, $content);
-				} else {
-					echo "Fail";
-				}
-			} else {
-				require_once('./part/error.php');
-			}
-		}
-	}
-?>
 <div class="ca_container">
 	<h1 class="ca_color_blue ca_no_margin">Connexion</h1>
 	<p class="ca_no_margin ca_color_fer">
 		Connectez-vous pour accéder à toutes les fonctionnalités du site.
 	</p>
-	<form action="index.php?pg=connect" method="post">
+	<form action="./treatement/connect.php" method="post">
 		<input class="js_inputConnect" type="text" name="login" placeholder="Pseudo" maxlength="40" required />
 		<input class="js_inputConnect" type="password" name="pass" placeholder="Mot de passe" required />
 		<button type="submit" name="button" value="connect">Connexion</button>
@@ -53,7 +15,7 @@
 	</p>
 	<form action="index.php?pg=connect" method="post">
 		<input class="js_inputConnect ca_collapse" type="email" name="email" placeholder="Email" maxlength="255" required />
-		<button type="submit" name="button" value="send" class="ca_collapse">Envoyer</button>
+		<button type="submit" name="button" value="sendPassForget" class="ca_collapse">Envoyer</button>
 		<div class="ca_clearb"></div>
 	</form>
 	<p class="ca_no+margin ca_color_fer">

@@ -16,8 +16,18 @@
 			</div>
 			<ul class="ca_back_white">
 				<li class="ca_border_blue"><a href="index.php" class="ca_color_blue">Accueil</a></li>
-				<li class="ca_border_blue"><a href="?pg=subscribe" class="ca_color_blue">Inscription</a></li>
-				<li class="ca_border_blue"><a href="?pg=connect" class="ca_color_blue">Connexion</a></li>
+				<?php
+					if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+						echo "
+							<li class=\"ca_border_blue\"><a href=\"./treatement/deconnect.php\" class=\"ca_color_blue\">Deconnexion</a></li>
+						";
+					} else {
+						echo "
+							<li class=\"ca_border_blue\"><a href=\"?pg=subscribe\" class=\"ca_color_blue\">Inscription</a></li>
+							<li class=\"ca_border_blue\"><a href=\"?pg=connect\" class=\"ca_color_blue\">Connexion</a></li>
+						";
+					}
+				?>
 			</ul>
 		</div>
 	</header>

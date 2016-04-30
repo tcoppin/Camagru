@@ -13,7 +13,7 @@
 	}
 
 	function ca_crypt($toCrypt, $salt) {
-		if (!isset($salt) || $salt === null || empty($salt))
+		if (!isset($salt) || $salt == null || empty($salt))
 			$salt = ca_generateToken(3);
 		return ($salt.":".sha1(crypt(md5($toCrypt), $salt."catc")));
 	}

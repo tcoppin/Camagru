@@ -3,7 +3,7 @@
 		echo "<div class=\"ca_infoBloc ca_errorBloc ca_border_blue ca_color_white\">";
 		unset($_SESSION['info']);
 	} else {
-		echo "<div class=\"ca_infoBloc ca_errorBloc ca_border_orange ca_color_white\">";			
+		echo "<div class=\"ca_infoBloc ca_errorBloc ca_border_orange ca_color_white\">";		
 	}
 ?>
 	<?php 
