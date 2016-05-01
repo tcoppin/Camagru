@@ -37,7 +37,6 @@
 				header('Location: ../index.php?pg=connect');
 			}
 		} else {
-			$_SESSION['error'] = "Une erreur est survenue. Veuillez recommencer ou contactez l'administrateur.";
 			header('Location: '.ADDR_HOST.'/index.php?pg=subscribe');
 		}
 	} else if (isset($_POST) && isset($_POST['button']) && !empty($_POST['button']) && $_POST['button'] === "sendPassForget") {

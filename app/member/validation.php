@@ -23,4 +23,7 @@
 	<p class="ca_no_margin ca_color_fer">
 		<?= $text; ?> Vous pouvez vous connecter sur cette <a href="./index.php?pg=connect">page</a>.
 	</p>
+	<div class="ca_margin_bottom_10">
+		<a href="index.php?pg=connect"><button name="button">Page de connexion</button></a>
+	</div>
 </div>
