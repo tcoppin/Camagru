@@ -13,7 +13,7 @@
 	<p class="ca_no_margin ca_color_fer">
 		Vous avez oublié votre mot de passe, on vous renvoit un mail pour le changer ;)
 	</p>
-	<form action="index.php?pg=connect" method="post">
+	<form action="./treatement/connect.php" method="post">
 		<input class="js_inputConnect ca_collapse" type="email" name="email" placeholder="Email" maxlength="255" required />
 		<button type="submit" name="button" value="sendPassForget" class="ca_collapse">Envoyer</button>
 		<div class="ca_clearb"></div>
