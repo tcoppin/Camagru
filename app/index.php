@@ -18,5 +18,7 @@
 		require_once('./member/deconnect.php');
 	else if ($_GET['pg'] == "forgetPass")
 		require_once('./member/forgetpass.php');
+	else if ($_GET['pg'] == "camera")
+		require_once('./pictures/cam.php');
 	
 	require_once('./part/footer.php');
