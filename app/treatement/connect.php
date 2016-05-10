@@ -11,7 +11,7 @@
 			$co_login = ca_secu($_POST['login']);
 			$co_pass = ca_secu($_POST['pass']);
 
-			$sql = 'SELECT `login`, `email`, `pass`, `date_inscrip`, `validate` FROM `ca_membres` WHERE `login` = "'.$co_login.'"';
+			$sql = 'SELECT `id_membre`, `login`, `email`, `pass`, `date_inscrip`, `validate` FROM `ca_membres` WHERE `login` = "'.$co_login.'"';
 			$value = $db->selectInDb($sql);
 			
 			if (!isset($value[0]) || empty($value[0])) {
