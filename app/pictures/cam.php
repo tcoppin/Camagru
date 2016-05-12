@@ -51,16 +51,16 @@
 	.ca_list_pictures li:hover .ca_namePicture {
 		opacity: 1;
 	}
-	.ca_bloc_right::-webkit-scrollbar {
+	.ca_bloc_right::-webkit-scrollbar, .ca_cnt_listOP::-webkit-scrollbar {
 	    width: 12px;
 	}
 	 
-	.ca_bloc_right::-webkit-scrollbar-track {
+	.ca_bloc_right::-webkit-scrollbar-track, .ca_cnt_listOP::-webkit-scrollbar {
 		border: 1px solid #E4E3E3;
 	    border-radius: 10px;
 	}
 	
-	.ca_bloc_right::-webkit-scrollbar-thumb {
+	.ca_bloc_right::-webkit-scrollbar-thumb, .ca_cnt_listOP::-webkit-scrollbar {
 	    border-radius: 10px;
 	    background-color: rgb(64,116,164);
 	    -webkit-box-shadow: inset 0 0 6px rgba(64,116,164,0.5); 
@@ -70,11 +70,19 @@
 		position: relative;
 	}
 
-	.ca_listOverPictures {
+	.ca_cnt_listOP {
 		position: absolute;
+		overflow: auto;
 		width: 100%;
-		text-align: center;
+		height: 15%;
+		max-height: 65px;
 		bottom: 10px;
+	}
+
+	.ca_listOverPictures {
+		width: 100%;
+		height: 100%;
+		text-align: center;
 	}
 
 	.ca_listOverPictures li {
@@ -82,6 +90,10 @@
 		padding: 5px;
 		margin-left: 10px;
 		cursor: pointer;
+		vertical-align: middle;
+		display: inline-block;
+		height: 100%;
+		width: auto;
 	}
 
 	.ca_listOverPictures li:hover {
@@ -89,10 +101,16 @@
 	}
 
 	.ca_listOverPictures li img {
-		height: 50px;
+		height: 100%;
+		width: auto;
 	}
 
 	#overPicture, #overPictureAper {
+		position: absolute;
+		top: 0;
+	}
+
+	#uploadPicturePvw {
 		position: absolute;
 		top: 0;
 	}
@@ -107,6 +125,35 @@
 	.ca_margin_top_5 {
 		margin-top: 5px;
 	}
+
+	.ca_abort_pic {
+		position: absolute;
+		top: 17.5px;
+		right: 0;
+		display: inline-block;
+		height: 35px;
+		width: 35px;
+		cursor: pointer;
+	}
+
+	.ca_abort_pic:before,
+	.ca_abort_pic:after {
+		display: inline-block;
+		height: 5px;
+		width: 35px;
+		background-color: #BE2F37;
+		border-radius: 10px;
+		position: absolute;
+		left: 0;
+	}
+
+	.ca_abort_pic:before,
+	.ca_abort_pic:after {
+		content: " ";
+	}
+
+	.ca_abort_pic:before {transform: rotate(-45deg); top: 0;}
+	.ca_abort_pic:after {transform: rotate(45deg); top: 0;}
 
 	@media screen and (max-width: 700px) {
 		.ca_bloc_left {
@@ -136,22 +183,27 @@
 <div class="ca_container ca_bloc_left">
 	<div class="ca_content_dev">
 		<video class="ca_video_cam"></video>
+		<img src="" id="uploadPicturePvw" style="display: none;">
+		<span class="ca_abort_pic"></span>
 		<canvas style="display: none;" id="overPicture"></canvas>
-		<ul class="ca_listOverPictures">
-			<?php
-				$sql = 'SELECT * FROM ca_overPictures ORDER BY id_overPicture';
-				$rtn = $db->selectInDb($sql);
-				foreach ($rtn as $key => $value) {
-					echo "<li>
-							<img id=\"".$value['id_overPicture']."\" src=\"".ADDR_HOST."/content/overPicture/".$value['file_name']."\" />
-						</li>";
-				}
-			?>
-			<div style="display: none; clear: both;"></div>
-		</ul>
+		<div class="ca_cnt_listOP">
+			<ul class="ca_listOverPictures">
+				<?php
+					$sql = 'SELECT * FROM ca_overPictures ORDER BY id_overPicture';
+					$rtn = $db->selectInDb($sql);
+					foreach ($rtn as $key => $value) {
+						echo "<li>
+								<img id=\"".$value['id_overPicture']."\" src=\"".ADDR_HOST."/content/overPicture/".$value['file_name']."\" />
+							</li>";
+					}
+				?>
+				<div style="display: none; clear: both;"></div>
+			</ul>
+		</div>
 	</div>
 	<button type="submit" name="button" id="takePicture" class="ca_width_50 ca_margin_top_5 ca_no_active">Prendre une photo</button>
 	<button type="submit" name="button" id="uploadPicture" class="ca_width_50 ca_margin_top_5">Uploader une photo</button>
+	<input type="file" style="display: none;" />
 	<div class="ca_content_aper">
 		<canvas style="display: none;" id="pictureToSend"></canvas>
 		<canvas style="display: none;" id="overPictureAper"></canvas>
@@ -176,6 +228,7 @@
 </div>
 
 <script type="text/javascript">
+
 	var alertMessage = document.querySelector('.ca_errorBloc');
 	function closeError() {
 		alertMessage.style.display = 'none';
@@ -202,6 +255,7 @@
 	var overPicture = document.querySelector('#overPicture');
 	var overPictureCtx = overPicture.getContext('2d');
 	var widthOP = 0, heightOP = 0, topOP = 0, leftOP = 0;
+	var listOP = document.querySelector('.ca_cnt_listOP');
 	var cntOverPictList = document.querySelector('.ca_listOverPictures');
 	var overPicToSend = document.querySelector('#overPictureAper');
 	var overPicToSendCtx = overPicToSend.getContext('2d');
@@ -212,11 +266,53 @@
 	var imgToSend = document.querySelector('#pictureToSend');
 	var imgToSendCtx = imgToSend.getContext('2d');
 	var widthImgToSend = 0, heightImgToSend = 0;
+	var imgToPreview = video;
 	
 	// Boutons
 	var namePictureIpt = document.getElementById('namePicture');
 	var validPicture = document.getElementById('validPicture');
 	var takePictureBtn = document.getElementById('takePicture');
+	var abortPicture = document.querySelector('.ca_abort_pic');
+	
+	// Upload Image
+	var uploadPictureIpt = document.querySelector('input[type=file]');
+	var uploadPictureBtn = document.querySelector('#uploadPicture');
+	var uploadPicturePvw = document.querySelector('#uploadPicturePvw');
+
+	function getFile() {
+		uploadPictureIpt.click();
+		uploadPicturePvw.style.width = video.clientWidth + "px";
+		uploadPicturePvw.style.height = video.clientHeight + "px";
+		uploadPicturePvw.value = uploadPictureIpt.value;
+		uploadPicturePvw.style.display = "inline-block";
+	}
+	function previewFile() {
+		var file = uploadPictureIpt.files[0];
+		var reader = new FileReader();
+
+		reader.onloadend = function () {
+			uploadPicturePvw.src = reader.result;
+		}
+
+		if (file) {
+			reader.readAsDataURL(file);
+		} else {
+			uploadPicturePvw.src = "";
+		}
+	}
+
+	previewFile();
+	uploadPictureBtn.addEventListener('click', getFile);
+	uploadPictureIpt.addEventListener('change', previewFile);
+
+	function clearPicture() {
+		overPicture.style.display = 'none';
+		uploadPicturePvw.style.display = "none";
+		uploadPicturePvw.src = "";
+		addClass(takePictureBtn, 'ca_no_active');
+	}
+
+	abortPicture.addEventListener('click', clearPicture);
 
 	// Superposition de la photo sur la vidéo
 	function overPictureFt(e) {
@@ -256,18 +352,20 @@
 				function takePicture() {
 					if (takePictureBtn.classList.contains('ca_no_active'))
 						return ;
-					widthImgToSend = video.offsetWidth;
-					heightImgToSend = video.offsetHeight;
+					if (uploadPicturePvw.style.display == "inline-block")
+						imgToPreview = uploadPicturePvw;
+					widthImgToSend = imgToPreview.offsetWidth;
+					heightImgToSend = imgToPreview.offsetHeight;
 					imgToSend.setAttribute('width', widthImgToSend);
 					imgToSend.setAttribute('height', heightImgToSend);
 					if (localMediaStream) {
-						imgToSendCtx.drawImage(video, 0, 0, widthImgToSend, heightImgToSend);
+						imgToSendCtx.drawImage(imgToPreview, 0, 0, widthImgToSend, heightImgToSend);
 						imgUserData = imgToSend.toDataURL();
 						imgToSend.style.display = "inline";
 						overPicToSend.setAttribute('width', widthOP);
 						overPicToSend.setAttribute('height', heightOP);
-						// topOP = getPositionTop(overPicture) - getPositionTop(video);
-						// leftOP = getPositionLeft(overPicture) - getPositionLeft(video);
+						// topOP = getPositionTop(overPicture) - getPositionTop(imgToPreview);
+						// leftOP = getPositionLeft(overPicture) - getPositionLeft(imgToPreview);
 						// console.log(getPositionTop(imgToSend));
 						// overPicToSend.style.top = getPositionTop(imgToSend) + topOP + "px";
 						// overPicToSend.style.left = getPositionLeft(imgToSend) + leftOP + "px";
