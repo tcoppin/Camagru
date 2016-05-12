@@ -19,6 +19,7 @@
 				<?php
 					if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
 						echo "
+							<li class=\"ca_border_blue\"><a href=\"?pg=camera\" class=\"ca_color_blue\">Camera</a></li>
 							<li class=\"ca_border_blue\"><a href=\"./treatement/deconnect.php\" class=\"ca_color_blue\">Deconnexion</a></li>
 						";
 					} else {

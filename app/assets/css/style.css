@@ -256,6 +256,13 @@ section {
 	color: #4074A4;
 }
 
+.ca_container button.ca_no_active, .ca_container button.ca_no_active:hover {
+	background-color: #E4E3E3;
+	color: #808285;
+	cursor: auto;
+	border-color: #808285;
+}
+
 .ca_container button.ca_collapse {
 	float: left;
 	width: 20%;

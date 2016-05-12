@@ -18,3 +18,21 @@ function removeClass(ele,className){
 	}
 	catch(ex){errlog(ex);}
 }
+
+function getPositionLeft (obj) {
+	var curleft = 0;
+	if (obj.offsetParent) {
+		curleft = obj.offsetLeft;
+		while (obj = obj.offsetParent) {curleft += obj.offsetLeft;}
+	}
+	return curleft;
+}
+
+function getPositionTop (obj) {
+	var curtop = 0;
+	if (obj.offsetParent) {
+		curtop = obj.offsetTop;
+		while (obj = obj.offsetParent) {curtop += obj.offsetTop;}
+	}
+	return curtop;
+}
