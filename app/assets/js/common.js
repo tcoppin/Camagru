@@ -36,3 +36,11 @@ function getPositionTop (obj) {
 	}
 	return curtop;
 }
+
+function showPopIn() {
+	console.log('titi');
+}
+
+function hidePopIn() {
+
+}

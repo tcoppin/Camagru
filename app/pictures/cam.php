@@ -4,178 +4,6 @@
 		echo '<meta http-equiv="Refresh" content="0; URL=index.php?pg=connect" />';
 	}
 ?>
-<style type="text/css">
-	.ca_bloc_left {
-		float: left;
-		width: 66%;
-		box-sizing: border-box;
-		margin-right: 1%;
-	}
-	.ca_bloc_right {
-		float: left;
-		width: 26%;
-		box-sizing: border-box;
-		margin-left: 1%;
-		overflow: auto;
-	}
-	.ca_list_pictures li {
-		position: relative;
-		text-align: left;
-		cursor: pointer;
-	}
-	.ca_list_pictures li img {
-		width: 100%;
-		margin-top: 10px;
-	}
-	.ca_list_pictures li:first-of-type img {
-		margin-top: 0;
-	}
-	.ca_list_pictures li .ca_namePicture {
-		position: absolute;
-		bottom: 10px;
-		padding: 10px;
-		left: 10%;
-		right: 10%;
-		text-align: center;
-		max-width: 80%;
-		max-height: 50%;
-		overflow: hidden;
-		display: inline-block;
-		border-radius: 8px;
-		background-color: rgba(255, 255, 255, 0.8);
-		opacity: 0;
-		transition: all 0.8s;
-		word-wrap: break-word;
-	}
-
-	.ca_list_pictures li:hover .ca_namePicture {
-		opacity: 1;
-	}
-	.ca_bloc_right::-webkit-scrollbar, .ca_cnt_listOP::-webkit-scrollbar {
-	    width: 12px;
-	}
-	 
-	.ca_bloc_right::-webkit-scrollbar-track, .ca_cnt_listOP::-webkit-scrollbar {
-		border: 1px solid #E4E3E3;
-	    border-radius: 10px;
-	}
-	
-	.ca_bloc_right::-webkit-scrollbar-thumb, .ca_cnt_listOP::-webkit-scrollbar {
-	    border-radius: 10px;
-	    background-color: rgb(64,116,164);
-	    -webkit-box-shadow: inset 0 0 6px rgba(64,116,164,0.5); 
-	}
-	
-	.ca_content_dev, .ca_content_aper {
-		position: relative;
-	}
-
-	.ca_cnt_listOP {
-		position: absolute;
-		overflow: auto;
-		width: 100%;
-		height: 15%;
-		max-height: 65px;
-		bottom: 10px;
-	}
-
-	.ca_listOverPictures {
-		width: 100%;
-		height: 100%;
-		text-align: center;
-	}
-
-	.ca_listOverPictures li {
-		float: left;
-		padding: 5px;
-		margin-left: 10px;
-		cursor: pointer;
-		vertical-align: middle;
-		display: inline-block;
-		height: 100%;
-		width: auto;
-	}
-
-	.ca_listOverPictures li:hover {
-		background-color: rgba(255, 255, 255, 0.8);
-	}
-
-	.ca_listOverPictures li img {
-		height: 100%;
-		width: auto;
-	}
-
-	#overPicture, #overPictureAper {
-		position: absolute;
-		top: 0;
-	}
-
-	#uploadPicturePvw {
-		position: absolute;
-		top: 0;
-	}
-
-	.ca_video_cam {
-		width: 100%;
-		position: relative;
-	}
-	.ca_width_50 {
-		width: calc(50% - 3px) !important;
-	}
-	.ca_margin_top_5 {
-		margin-top: 5px;
-	}
-
-	.ca_abort_pic {
-		position: absolute;
-		top: 17.5px;
-		right: 0;
-		display: inline-block;
-		height: 35px;
-		width: 35px;
-		cursor: pointer;
-	}
-
-	.ca_abort_pic:before,
-	.ca_abort_pic:after {
-		display: inline-block;
-		height: 5px;
-		width: 35px;
-		background-color: #BE2F37;
-		border-radius: 10px;
-		position: absolute;
-		left: 0;
-	}
-
-	.ca_abort_pic:before,
-	.ca_abort_pic:after {
-		content: " ";
-	}
-
-	.ca_abort_pic:before {transform: rotate(-45deg); top: 0;}
-	.ca_abort_pic:after {transform: rotate(45deg); top: 0;}
-
-	@media screen and (max-width: 700px) {
-		.ca_bloc_left {
-			float: none;
-			width: 94%;
-			margin-right: 0%;
-		}
-		.ca_bloc_right {
-			float: none;
-			width: 94%;
-			margin-left: 3%;
-		}
-		.ca_list_pictures li {
-			width: 48%;
-			margin: 1%;
-			display: inline-block;
-		}
-		.ca_list_pictures div {
-			display: inline-block !important;
-		}
-	}
-</style>
 <div class="ca_infoBloc ca_errorBloc ca_color_white" style="display: none;">
 	<span id="ca_text"></span>
 	<span class="ca_close ca_color_orange" id="closeErrorBloc">X</span>
@@ -186,20 +14,18 @@
 		<img src="" id="uploadPicturePvw" style="display: none;">
 		<span class="ca_abort_pic"></span>
 		<canvas style="display: none;" id="overPicture"></canvas>
-		<div class="ca_cnt_listOP">
-			<ul class="ca_listOverPictures">
-				<?php
-					$sql = 'SELECT * FROM ca_overPictures ORDER BY id_overPicture';
-					$rtn = $db->selectInDb($sql);
-					foreach ($rtn as $key => $value) {
-						echo "<li>
-								<img id=\"".$value['id_overPicture']."\" src=\"".ADDR_HOST."/content/overPicture/".$value['file_name']."\" />
-							</li>";
-					}
-				?>
-				<div style="display: none; clear: both;"></div>
-			</ul>
-		</div>
+		<ul class="ca_listOverPictures">
+			<?php
+				$sql = 'SELECT * FROM ca_overPictures ORDER BY id_overPicture';
+				$rtn = $db->selectInDb($sql);
+				foreach ($rtn as $key => $value) {
+					echo "<li>
+							<img id=\"".$value['id_overPicture']."\" src=\"".ADDR_HOST."/content/overPicture/".$value['file_name']."\" />
+						</li>";
+				}
+			?>
+			<div style="display: none; clear: both;"></div>
+		</ul>
 	</div>
 	<button type="submit" name="button" id="takePicture" class="ca_width_50 ca_margin_top_5 ca_no_active">Prendre une photo</button>
 	<button type="submit" name="button" id="uploadPicture" class="ca_width_50 ca_margin_top_5">Uploader une photo</button>
@@ -210,6 +36,7 @@
 	</div>
 	<input type="text" id="namePicture" class="ca_margin_top_5 ca_collapse" style="display: none;" name="name" placeholder="Nom de la photo (optionnel)" maxlength="255" required />
 	<button type="submit" name="button" id="validPicture" class="ca_margin_top_5 ca_collapse" style="display: none;">Valider</button>
+	<div style="clear: both;"></div>
 </div>
 
 <div class="ca_container ca_bloc_right">
@@ -289,6 +116,16 @@
 	function previewFile() {
 		var file = uploadPictureIpt.files[0];
 		var reader = new FileReader();
+		
+		if (file) {
+			var extension = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase();
+			if (extension !== "png" && extension !== "jpg" && extension !== "jpeg") {
+				alertMessage.querySelector('#ca_text').innerText = "Fichier invalide. Fichiers accepter : '.png', '.jpg', '.jpeg'";
+				alertMessage.style.display = "block";
+				return ;
+			}
+		}
+
 
 		reader.onloadend = function () {
 			uploadPicturePvw.src = reader.result;

@@ -20,5 +20,9 @@
 		require_once('./member/forgetpass.php');
 	else if ($_GET['pg'] == "camera")
 		require_once('./pictures/cam.php');
+	else {
+		require_once('./gallery.php');
+		require_once('./member/connect.php');
+	}
 	
 	require_once('./part/footer.php');
