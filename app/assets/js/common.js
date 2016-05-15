@@ -37,10 +37,24 @@ function getPositionTop (obj) {
 	return curtop;
 }
 
-function showPopIn() {
-	console.log('titi');
+function showPopIn(e) {
+	var overSite = document.querySelector('.ca_overSite');
+	var popIn = document.querySelector('#popIn');
+	var parent = e.target.parentNode;
+
+	overSite.style.display = 'block';
+	popIn.style.display = 'block';
+	if (parent.classList.contains('ca_img_gallery')) {
+		popIn.querySelector('.ca_color_blue').innerText = parent.querySelector('span').innerHTML;
+		popIn.querySelector('.ca_img_popIn').src = parent.querySelector('img').src;
+	} else
+		hidePopIn();
 }
 
 function hidePopIn() {
+	var overSite = document.querySelector('.ca_overSite');
+	var popIn = document.querySelector('#popIn');
 
+	overSite.style.display = 'none';
+	popIn.style.display = 'none';
 }

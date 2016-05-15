@@ -22,7 +22,8 @@
 		require_once('./pictures/cam.php');
 	else {
 		require_once('./gallery.php');
-		require_once('./member/connect.php');
+		if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']))
+			require_once('./member/connect.php');
 	}
 	
 	require_once('./part/footer.php');
