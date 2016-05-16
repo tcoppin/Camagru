@@ -47,6 +47,7 @@ function showPopIn(e) {
 	if (parent.classList.contains('ca_img_gallery')) {
 		popIn.querySelector('.ca_color_blue').innerText = parent.querySelector('span').innerHTML;
 		popIn.querySelector('.ca_img_popIn').src = parent.querySelector('img').src;
+		popIn.dataset.id = parent.querySelector('img').dataset.name;
 	} else
 		hidePopIn();
 }

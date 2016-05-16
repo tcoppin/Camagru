@@ -113,6 +113,13 @@
 		uploadPicturePvw.value = uploadPictureIpt.value;
 		uploadPicturePvw.style.display = "inline-block";
 	}
+
+	function changeSize() {
+		uploadPicturePvw.style.width = video.clientWidth + "px";
+		uploadPicturePvw.style.height = video.clientHeight + "px";
+	}
+	window.addEventListener('resize', changeSize);
+
 	function previewFile() {
 		var file = uploadPictureIpt.files[0];
 		var reader = new FileReader();
@@ -172,7 +179,7 @@
 	}
 
 	// Init vidéo
-	navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+	navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.mediaDevices.getUserMedia);
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia (
 
