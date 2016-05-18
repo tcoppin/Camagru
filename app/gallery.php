@@ -99,6 +99,7 @@
 			<input type="text" class="ca_collapse ca_width_70 ca_no_radius" placeholder="Commenter"></input>
 			<button class="ca_collapse">Envoyer</button>
 		</div>
+		<div class=""><span class=""></span>Like -- <span class=""></span> Commentaires</div>
 		<script type="text/javascript">
 			var popIn = document.querySelector('#popIn');
 			function addLike() {
@@ -112,10 +113,11 @@
 				oReq.onreadystatechange = function() {
 					if (oReq.readyState == 4 && oReq.status == 200) {
 						var response = JSON.parse(oReq.responseText);
-						console.log(response);
+						if (response.code == "900") {
+							addClass(likeBtn, 'ca_like');
+						}
 					}
 				}
-				addClass(likeBtn, 'ca_like');
 
 			}
 			document.getElementById('likeBtn').addEventListener('click', addLike);

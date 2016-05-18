@@ -48,6 +48,24 @@ function showPopIn(e) {
 		popIn.querySelector('.ca_color_blue').innerText = parent.querySelector('span').innerHTML;
 		popIn.querySelector('.ca_img_popIn').src = parent.querySelector('img').src;
 		popIn.dataset.id = parent.querySelector('img').dataset.name;
+
+		var oReq = new XMLHttpRequest();
+		var postData = "idPost=" + popIn.dataset.id;
+		oReq.open("POST", "http://localhost:8080/camagru/treatement/getPostInfo.php", true);
+		oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		oReq.send(postData);
+		oReq.onreadystatechange = function() {
+			if (oReq.readyState == 4 && oReq.status == 200) {
+				var response = JSON.parse(oReq.responseText);
+				console.log(response);
+				if (response.code == "900") {
+					if (response.likeOrNot == 1)
+						addClass(likeBtn, 'ca_like');
+					else
+						removeClass(likeBtn, 'ca_like');
+				}
+			}
+		}
 	} else
 		hidePopIn();
 }
