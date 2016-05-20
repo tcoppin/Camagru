@@ -17,7 +17,7 @@
 		$rtn = $db->selectInDb($sql);
 		$comment = array();
 		foreach ($rtn as $value) {
-			$comment[] = '{"login": "'.$value['login'].'", "content": "'.$value['content'].'", "date_comment": "'.$value['date_comment'].'"}';
+			$comment[] = '{"login": "'.$value['login'].'", "content": "'.$value['content'].'", "date_comment": "'.date('d-m-Y H:i:s', strtotime($value['date_comment'])).'"}';
 		 }
 		// echo ('{"code": "900", "nbLike": "'.$nbLike.'", "likeOrNot": "'.$likeOrNot.'", "nbComment": "'.$nbComment.'"}');
 		$json = array();

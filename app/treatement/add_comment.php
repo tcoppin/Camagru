@@ -10,6 +10,11 @@
 		if ($db->changeDb($sql, $data)) {
 			$sql = 'SELECT COUNT(*) FROM `ca_comment` WHERE `id_post` = "'.$_POST['idPost'].'"';
 			$rtn = $db->selectInDb($sql);
+			$sql = 'SELECT * FROM `ca_membres` INNER JOIN `ca_pictures` ON `id_membre` = `id_user`';
+			$info = $db->selectInDb($sql);
+			$subject = "Nouveau commentaire -- Camagru.com";
+			$content = "Bonjour ".$info[0]['login'].",<br /><br />".$_SESSION['user']." vient de laisser un commentaire sur votre post ".$info[0]['name_picture']."";
+			ca_mail($info[0]['email'], $subject, $content);
 			echo ('{"code":"900", "message":"", "nbComment":"'.$rtn[0][0].'"}');
 		} else {
 			echo ('{"code":"901", "message":""}');

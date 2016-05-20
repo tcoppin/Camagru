@@ -42,10 +42,11 @@
 <div class="ca_container ca_bloc_right">
 	<ul class="ca_list_pictures">
 	<?php
-		$sql = 'SELECT `name_picture`, `file_name` FROM ca_pictures WHERE id_user = "'.$_SESSION['id_user'].'"';
+		$sql = 'SELECT `id_picture`, `name_picture`, `file_name` FROM ca_pictures WHERE id_user = "'.$_SESSION['id_user'].'"';
 		$rtn = $db->selectInDb($sql);
 		foreach ($rtn as $key => $value) {
-			echo "<li>
+			echo "<li data-id=\"".$value['id_picture']."\">
+					<span class=\"ca_del_pic\"></span>
 					<img src=\"".ADDR_HOST."/content/tmp/".$value['file_name'].".png\" />
 					<span class=\"ca_namePicture ca_color_blue\">".$value['name_picture']."</span>
 				</li>";
@@ -55,12 +56,37 @@
 </div>
 
 <script type="text/javascript">
-
 	var alertMessage = document.querySelector('.ca_errorBloc');
 	function closeError() {
 		alertMessage.style.display = 'none';
 	}
 	document.getElementById('closeErrorBloc').addEventListener('click', closeError, false);
+
+	var delPicList = document.getElementsByClassName('ca_del_pic');
+	for (var i = 0; i < delPicList.length; i++) {
+		delPicList[i].addEventListener('click', function(e) {
+			var target = e.target || e.srcElement;
+			var oReq = new XMLHttpRequest();
+			console.log(target.parentNode);
+			var postData = "idPost=" + target.parentNode.dataset.id;
+			oReq.open("POST", "<?= ADDR_HOST ?>/treatement/del_picture.php", true);
+			oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			oReq.send(postData);
+			oReq.onreadystatechange = function() {
+				if (oReq.readyState == 4 && oReq.status == 200) {
+					var response = JSON.parse(oReq.responseText);
+					console.log(response);
+					if (response.code == "900") {
+						document.querySelector('.ca_list_pictures').removeChild(target.parentNode);
+						alertMessage.querySelector('#ca_text').innerText = response.message;
+						alertMessage.style.display = "block";
+					} else {
+						//cache popIn et affiche message d'erreur
+					}
+				}
+			}
+		}, false);
+	}
 	
 	// Bloc de droite
 	var blocRight = document.querySelector('.ca_bloc_right');
@@ -228,7 +254,7 @@
 							namePicture = 'Camagru - ' + Math.round(Math.random()*100);
 						var oReq = new XMLHttpRequest();
 						var postData = "imgUser=" + imgUserData + "&name=" + namePicture + "&overPicture=" + overPictureId + "&widthOP=" + parseInt(widthOP) + "&heightOP=" + parseInt(heightOP) + "&idOP=" + overPictureId;
-						oReq.open("POST", "http://localhost:8080/camagru/pictures/new_image.php", true);
+						oReq.open("POST", "<?= ADDR_HOST ?>/pictures/new_image.php", true);
 						oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 						oReq.send(postData);
 						oReq.onreadystatechange = function() {

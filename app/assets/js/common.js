@@ -38,9 +38,12 @@ function getPositionTop (obj) {
 }
 
 function getPostInfo(popIn) {
+	var likeBtn = document.getElementById('likeBtn');
 	var oReq = new XMLHttpRequest();
 	var postData = "idPost=" + popIn.dataset.id;
-	oReq.open("POST", "http://localhost:8080/camagru/treatement/getPostInfo.php", true);
+	if (!location.origin)
+		location.origin = location.protocol + "//" + location.host;
+	oReq.open("POST", location.origin + "/camagru/treatement/getPostInfo.php", true);
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	oReq.send(postData);
 	oReq.onreadystatechange = function() {
@@ -48,14 +51,16 @@ function getPostInfo(popIn) {
 			var response = JSON.parse(oReq.responseText);
 			console.log(response);
 			if (response.code == "900") {
-				if (response.likeOrNot == 1)
+				if (likeBtn && response.likeOrNot == 1)
 					addClass(likeBtn, 'ca_like');
-				else
+				else if (likeBtn)
 					removeClass(likeBtn, 'ca_like');
 				popIn.querySelector('#nbLike').innerText = response.nbLike;
 				popIn.querySelector('#nbComment').innerText = response.nbComment;
+				popIn.querySelector('.ca_popIn_comment').innerHTML = "";
 				for (var i = 0; i < response.comment.length; i++) {
-					popIn.querySelector('.ca_popIn_comment').innerHTML += "<li>" + JSON.parse(response.comment[i]).login + "</li>";
+					// popIn.querySelector('.ca_popIn_comment').innerHTML += "<li>" + JSON.parse(response.comment[i]).login + "</li>";
+					popIn.querySelector('.ca_popIn_comment').innerHTML += "<li><span class=\"ca_comm_login ca_color_orange\">" + JSON.parse(response.comment[i]).login + "</span><span class=\"ca_comm_date ca_color_fer\">" + JSON.parse(response.comment[i]).date_comment + "</span><br /><span class=\"ca_comm_content\">" + JSON.parse(response.comment[i]).content + "</span></li>";
 				}
 			}
 		}

@@ -56,8 +56,34 @@
 		font-style: italic;
 		font-size: 12px;
 	}
+	.ca_popIn_comment {
+		margin-top: 10px;
+		width: 100%;
+		max-height: 250px;
+		overflow: auto;
+	}
+	.ca_popIn_comment li {
+		border-bottom: 1px solid #E4E3E3;
+		padding: 5px 0;
+		padding-right: 10px;
+	}
+	.ca_popIn_comment li .ca_comm_login {
+		float: left;
+	}
+	.ca_popIn_comment li .ca_comm_date {
+		float: right;
+		font-size: 12px;
+		font-style: italic;
+	}
+	.ca_popIn_comment li .ca_comm_content {
+		word-wrap: break-word;
+		font-size: 14px;
+	}
 </style>
-
+<div class="ca_infoBloc ca_errorBloc ca_color_white" style="display: none;">
+	<span id="ca_text"></span>
+	<span class="ca_close ca_color_orange" id="closeErrorBloc">X</span>
+</div>
 <div class="ca_container ca_gallery">
 	<h1 class="ca_color_blue ca_no_margin">Galerie</h1>
 	<ul class="ca_list_pictures">
@@ -103,15 +129,20 @@
 			<input type="text" class="ca_collapse ca_width_70 ca_no_radius" id="iptComment" placeholder="Commenter"></input>
 			<button class="ca_collapse" id="commentBtn">Envoyer</button>
 		</div>
-		<div class="ca_nbPost ca_color_fer"><span id="nbLike"></span> Like -- <span id="nbComment"></span> Commentaires</div>
 		<script type="text/javascript">
+			var alertMessage = document.querySelector('.ca_errorBloc');
+			function closeError() {
+				alertMessage.style.display = 'none';
+			}
+			document.getElementById('closeErrorBloc').addEventListener('click', closeError, false);
+
 			var popIn = document.querySelector('#popIn');
 			function addLike() {
 				var likeBtn = document.getElementById('likeBtn');
 				
 				var oReq = new XMLHttpRequest();
 				var postData = "idPost=" + popIn.dataset.id;
-				oReq.open("POST", "http://localhost:8080/camagru/treatement/add_like.php", true);
+				oReq.open("POST", "<?= ADDR_HOST ?>/treatement/add_like.php", true);
 				oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				oReq.send(postData);
 				oReq.onreadystatechange = function() {
@@ -124,7 +155,9 @@
 							removeClass(likeBtn, "ca_like");
 							getPostInfo(popIn);
 						} else {
-							//cache popIn et affiche message d'erreur
+							hidePopIn();
+							alertMessage.querySelector('#ca_text').innerText = response.message;
+							alertMessage.style.display = "block";
 						}
 					}
 				}
@@ -135,12 +168,13 @@
 				
 				var oReq = new XMLHttpRequest();
 				var postData = "idPost=" + popIn.dataset.id + "&comment=" + iptComment.value;
-				oReq.open("POST", "http://localhost:8080/camagru/treatement/add_comment.php", true);
+				oReq.open("POST", "<?= ADDR_HOST ?>/treatement/add_comment.php", true);
 				oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				oReq.send(postData);
 				oReq.onreadystatechange = function() {
 					if (oReq.readyState == 4 && oReq.status == 200) {
 						var response = JSON.parse(oReq.responseText);
+						console.log(response);
 						if (response.code == "900") {
 							iptComment.value = "";
 							getPostInfo(popIn);
@@ -157,6 +191,7 @@
 			document.getElementById('commentBtn').addEventListener('click', addComment);
 		</script>
 	<?php } ?>
+	<div class="ca_nbPost ca_color_fer"><span id="nbLike"></span> Like -- <span id="nbComment"></span> Commentaires</div>
 	<ul class="ca_popIn_comment">
 	</ul>
 </div>
@@ -176,7 +211,7 @@
 		}
 		var oReq = new XMLHttpRequest();
 		var postData = "newPage=" + currentPage;
-		oReq.open("POST", "http://localhost:8080/camagru/pictures/new_page.php", true);
+		oReq.open("POST", "<?= ADDR_HOST ?>/pictures/new_page.php", true);
 		oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		oReq.send(postData);
 		oReq.onreadystatechange = function() {
