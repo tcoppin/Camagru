@@ -52,6 +52,10 @@
 		cursor: auto;
 		color: #808285;	
 	}
+	.ca_nbPost {
+		font-style: italic;
+		font-size: 12px;
+	}
 </style>
 
 <div class="ca_container ca_gallery">
@@ -96,10 +100,10 @@
 	?>
 		<div class="ca_popIn_option">
 			<button class="ca_collapse right" id="likeBtn">Like</button><!-- add ca_like -->
-			<input type="text" class="ca_collapse ca_width_70 ca_no_radius" placeholder="Commenter"></input>
-			<button class="ca_collapse">Envoyer</button>
+			<input type="text" class="ca_collapse ca_width_70 ca_no_radius" id="iptComment" placeholder="Commenter"></input>
+			<button class="ca_collapse" id="commentBtn">Envoyer</button>
 		</div>
-		<div class=""><span class=""></span>Like -- <span class=""></span> Commentaires</div>
+		<div class="ca_nbPost ca_color_fer"><span id="nbLike"></span> Like -- <span id="nbComment"></span> Commentaires</div>
 		<script type="text/javascript">
 			var popIn = document.querySelector('#popIn');
 			function addLike() {
@@ -115,16 +119,45 @@
 						var response = JSON.parse(oReq.responseText);
 						if (response.code == "900") {
 							addClass(likeBtn, 'ca_like');
+							getPostInfo(popIn);
+						} else if (response.code == "910") {
+							removeClass(likeBtn, "ca_like");
+							getPostInfo(popIn);
+						} else {
+							//cache popIn et affiche message d'erreur
 						}
 					}
 				}
-
+			}
+			function addComment() {
+				var commentBtn = document.getElementById('commentBtn');
+				var iptComment = document.getElementById('iptComment');
+				
+				var oReq = new XMLHttpRequest();
+				var postData = "idPost=" + popIn.dataset.id + "&comment=" + iptComment.value;
+				oReq.open("POST", "http://localhost:8080/camagru/treatement/add_comment.php", true);
+				oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				oReq.send(postData);
+				oReq.onreadystatechange = function() {
+					if (oReq.readyState == 4 && oReq.status == 200) {
+						var response = JSON.parse(oReq.responseText);
+						if (response.code == "900") {
+							iptComment.value = "";
+							getPostInfo(popIn);
+						} else if (response.code == "910") {
+							getPostInfo(popIn);
+						} else {
+							console.log(response);
+							//cache popIn et affiche message d'erreur
+						}
+					}
+				}
 			}
 			document.getElementById('likeBtn').addEventListener('click', addLike);
+			document.getElementById('commentBtn').addEventListener('click', addComment);
 		</script>
 	<?php } ?>
 	<ul class="ca_popIn_comment">
-		<li></li>
 	</ul>
 </div>
 

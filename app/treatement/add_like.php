@@ -17,7 +17,12 @@
 				echo ('{"code":"901", "message":""}');
 			}
 		} else {
-			echo "Suppression du like";
+			$sql = 'DELETE FROM `ca_like` WHERE `id_image` = :idPost AND `id_user` = :idUser';
+			$data = array('idPost' => $_POST['idPost'], 'idUser' => $_SESSION['id_user']);
+			if ($db->changeDb($sql, $data))
+				echo ('{"code":"910", "message":"", "nbLike":"'.$rtn[0][0].'"}');
+			else
+				echo ('{"code":"901", "message":""}');
 		}
 	}
 ?>
