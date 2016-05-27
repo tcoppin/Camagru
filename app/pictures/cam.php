@@ -64,28 +64,28 @@
 
 	var delPicList = document.getElementsByClassName('ca_del_pic');
 	for (var i = 0; i < delPicList.length; i++) {
-		delPicList[i].addEventListener('click', function(e) {
-			var target = e.target || e.srcElement;
-			var oReq = new XMLHttpRequest();
-			console.log(target.parentNode);
-			var postData = "idPost=" + target.parentNode.dataset.id;
-			oReq.open("POST", "<?= ADDR_HOST ?>/treatement/del_picture.php", true);
-			oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			oReq.send(postData);
-			oReq.onreadystatechange = function() {
-				if (oReq.readyState == 4 && oReq.status == 200) {
-					var response = JSON.parse(oReq.responseText);
-					console.log(response);
-					if (response.code == "900") {
-						document.querySelector('.ca_list_pictures').removeChild(target.parentNode);
-						alertMessage.querySelector('#ca_text').innerText = response.message;
-						alertMessage.style.display = "block";
-					} else {
-						//cache popIn et affiche message d'erreur
-					}
+		delPicList[i].addEventListener('click', delPicture);
+	}
+
+	function delPicture(e) {
+		var target = e.target || e.srcElement;
+		var oReq = new XMLHttpRequest();
+		var postData = "idPost=" + target.parentNode.dataset.id;
+		oReq.open("POST", "<?= ADDR_HOST ?>/treatement/del_picture.php", true);
+		oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		oReq.send(postData);
+		oReq.onreadystatechange = function() {
+			if (oReq.readyState == 4 && oReq.status == 200) {
+				var response = JSON.parse(oReq.responseText);
+				if (response.code == "900") {
+					document.querySelector('.ca_list_pictures').removeChild(target.parentNode);
+					alertMessage.querySelector('#ca_text').innerText = response.message;
+					alertMessage.style.display = "block";
+				} else {
+					//cache popIn et affiche message d'erreur
 				}
 			}
-		}, false);
+		}
 	}
 	
 	// Bloc de droite

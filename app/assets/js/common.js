@@ -59,7 +59,6 @@ function getPostInfo(popIn) {
 				popIn.querySelector('#nbComment').innerText = response.nbComment;
 				popIn.querySelector('.ca_popIn_comment').innerHTML = "";
 				for (var i = 0; i < response.comment.length; i++) {
-					// popIn.querySelector('.ca_popIn_comment').innerHTML += "<li>" + JSON.parse(response.comment[i]).login + "</li>";
 					popIn.querySelector('.ca_popIn_comment').innerHTML += "<li><span class=\"ca_comm_login ca_color_orange\">" + JSON.parse(response.comment[i]).login + "</span><span class=\"ca_comm_date ca_color_fer\">" + JSON.parse(response.comment[i]).date_comment + "</span><br /><span class=\"ca_comm_content\">" + JSON.parse(response.comment[i]).content + "</span></li>";
 				}
 			}

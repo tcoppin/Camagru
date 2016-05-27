@@ -112,7 +112,11 @@
 					$i += 1;
 				}
 			?>
-			<li id="next">></li>
+			<?php if ($nbPic < 6) { ?>
+				<li class="inactive" id="next">></li>
+			<?php } else { ?>
+				<li id="next">></li>
+			<?php } ?>
 		</ul>
 	</div>
 </div>
@@ -201,6 +205,9 @@
 	var nbPage = <?= ceil($nbPic / 6) ?>;
 	function changePage(e) {
 		var target = e.target || e.srcElement;
+
+		if (target.classList.contains('inactive'))
+			return ;
 
 		if (target.innerHTML == "&lt;" && !target.classList.contains('inactive')) {
 			currentPage -= 1;

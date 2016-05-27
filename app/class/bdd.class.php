@@ -19,7 +19,9 @@ class bdd {
 	public function changeDb($sql, $data) {
 		try {
 			$rqt = self::$pdo->prepare($sql);
-			if ($rqt->execute($data))
+			if ($data != null && $rqt->execute($data))
+				return (1);
+			else if ($data == null && $rqt->execute())
 				return (1);
 			else
 				return (0);

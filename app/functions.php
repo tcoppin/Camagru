@@ -3,7 +3,10 @@
 	function ca_secu($toSecu) {
 		if (is_numeric($toSecu))
 			return ($toSecu);
-		return (htmlentities($toSecu));
+		$toSecu = trim($toSecu);
+		$toSecu = stripslashes($toSecu);
+		$toSecu = htmlspecialchars($toSecu);
+		return ($toSecu);
 	}
 
 	function ca_generateToken($size) {
